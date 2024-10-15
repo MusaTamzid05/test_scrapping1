@@ -12,14 +12,15 @@ class MyDatabase:
 
     def add_watches(self, watch_list):
         cursor = self.db.cursor()
+        product_list = []
 
         for watch in watch_list:
-            brand = watch["brand"]
-            model = watch["model"]
-            price = watch["price"]
-            specifications = watch["specifications"]
-            category = watch["category"]
-            image_url = watch["image_url"]
+            brand = watch["brand"].strip()
+            model = watch["model"].strip()
+            price = watch["price"].strip()
+            specifications = watch["specifications"].strip()
+            category = watch["category"].strip()
+            image_url = watch["image_url"].strip()
 
             insert_query = """
         INSERT INTO watches (brand, model, price, specifications, category, image_url)
@@ -29,7 +30,17 @@ class MyDatabase:
             watch_id = cursor.fetchone()[0]
             self.db.commit()
 
+            if watch["product_url"] != "None":
+                product_list.append(
+                        {
+                            "id" : watch_id,
+                            "product_url" : watch["product_url"]
+
+                        })
+
+
         cursor.close()
+        return product_list
 
 
 

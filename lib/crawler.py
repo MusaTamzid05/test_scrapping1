@@ -22,13 +22,15 @@ class Crawler:
                     print(f"{key} = {value}")
                 print("*" * 30)
 
-        database.add_watches(watch_list=watch_list)
+        product_info_list  = database.add_watches(watch_list=watch_list)
         print("products saved in database")
 
-        time.sleep(delay)
-        product_driver = webdriver.Chrome()
+        #time.sleep(delay)
+        #product_driver = webdriver.Chrome()
 
-        for watch in watch_list:
+        for product_info in product_info_list:
+            print(product_info)
+            '''
             product_url = watch["product_url"]
 
             if product_url == "None":
@@ -46,6 +48,7 @@ class Crawler:
                         print(f"{key} = {value}")
                     print("*" * 30)
 
+            '''
 
 
             

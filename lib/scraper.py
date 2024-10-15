@@ -20,10 +20,8 @@ class Scraper:
             image_url = watch.select_one('img.s-image')['src'] if watch.select_one('img.s-image') else 'None'
             product_url = watch.select_one('a.a-link-normal')['href'] if watch.select_one('a.a-link-normal') else 'None'
 
-            if product_url:
+            if product_url != "None":
                 product_url = f"https://www.amazon.com/{product_url}"
-            else:
-                product_url = "None"
             
             watch_list.append(
                 {

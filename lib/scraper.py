@@ -22,6 +22,8 @@ class Scraper:
 
             if product_url:
                 product_url = f"https://www.amazon.com/{product_url}"
+            else:
+                product_url = "None"
             
             watch_list.append(
                 {
@@ -38,8 +40,29 @@ class Scraper:
             )
 
         return watch_list
+    
+    def get_reviews(self, html):
+        parser = BeautifulSoup(html, 'html.parser')
+        reviews = parser.find_all('div', {'class': 'review'})
+        review_list = []
+    
+        for review in reviews:
+            rating = float(review.find('span', {'class': 'a-icon-alt'}).text.split()[0]) if review.find('span', {'class': 'a-icon-alt'}) else "None"
+            review_text = review.find('div', class_='a-expander-content reviewText review-text-content a-expander-partial-collapse-content').text.strip() if review.find('div', class_='a-expander-content reviewText review-text-content a-expander-partial-collapse-content') else "None"
+            reviewer_name = review.find('span', {'class': 'a-profile-name'}).text.strip() if review.find('span', {'class': 'a-profile-name'}) else "None"
+            review_date = review.find('span', {'class': 'a-size-base a-color-secondary review-date'}).text.strip() if review.find('span', {'class': 'a-size-base a-color-secondary review-date'}) else "None"
+            review_list.append(
+                {
+                    "rating" : rating,
+                    "text" : review_text,
+                    "reviewer_name" : reviewer_name,
+                    "review_date" : review_date,
+                }
+
+            )
+
+        return review_list
 
                 
-
 
 

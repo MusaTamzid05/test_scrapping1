@@ -1,5 +1,6 @@
 from selenium import webdriver
 from lib.scraper import Scraper
+from lib.database import MyDatabase
 import time
 
 class Crawler:
@@ -8,6 +9,7 @@ class Crawler:
 
     def run(self, debug=False, delay=4):
         scraper = Scraper()
+        database = MyDatabase()
 
         driver = webdriver.Chrome()
         driver.get("https://www.amazon.com/s?k=watches")
@@ -19,6 +21,9 @@ class Crawler:
                 for key, value in watch.items():
                     print(f"{key} = {value}")
                 print("*" * 30)
+
+        database.add_watches(watch_list=watch_list)
+        print("products saved in database")
 
         time.sleep(delay)
         product_driver = webdriver.Chrome()

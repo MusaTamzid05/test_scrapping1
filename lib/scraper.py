@@ -30,7 +30,7 @@ class Scraper:
                     "brand" : brand,
                     "model" : model,
                     "price" : price,
-                    "specification" : specifications,
+                    "specifications" : specifications,
                     "category" : category,
                     "image_url" : image_url,
                     "product_url" : product_url

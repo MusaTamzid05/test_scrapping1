@@ -22,6 +22,9 @@ class Scraper:
 
             if product_url != "None":
                 product_url = f"https://www.amazon.com/{product_url}"
+
+            if model == "None":
+                continue
             
             watch_list.append(
                 {

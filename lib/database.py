@@ -42,6 +42,24 @@ class MyDatabase:
         cursor.close()
         return product_list
 
+    def add_reviews(self, watch_id, review_list):
+        cursor = self.db.cursor()
+
+        for review in review_list:
+            rating = review["rating"]
+            review_text = review["text"].strip()
+            reviewer_name = review["reviewer_name"].strip()
+            review_date = review["review_date"].strip()
+
+            insert_query = """
+            INSERT INTO reviews (watch_id, rating, review_text, reviewer_name, review_time_info)
+            VALUES (%s, %s, %s, %s, %s)
+            """
+            cursor.execute(insert_query, (watch_id, rating, review_text, reviewer_name, review_date))
+
+        cursor.close()
+        self.db.commit()
+
 
 
 

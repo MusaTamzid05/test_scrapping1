@@ -25,30 +25,29 @@ class Crawler:
         product_info_list  = database.add_watches(watch_list=watch_list)
         print("products saved in database")
 
-        #time.sleep(delay)
-        #product_driver = webdriver.Chrome()
+        time.sleep(delay)
+        product_driver = webdriver.Chrome()
 
-        for product_info in product_info_list:
-            print(product_info)
-            '''
-            product_url = watch["product_url"]
+        for index, product_info in enumerate(product_info_list):
+            product_url = product_info["product_url"]
 
-            if product_url == "None":
-                continue
-            print(f"Getting reviews from {product_url}")
+            print(f"{index + 1} / {len(product_info_list)} Getting reviews from {product_url}")
             product_driver.get(product_url)
             time.sleep(delay)
 
             review_list = scraper.get_reviews(html=product_driver.page_source)
 
             if debug:
-                for index, watch in enumerate(review_list):
+                for index, review in enumerate(review_list):
                     print(index)
-                    for key, value in watch.items():
+                    for key, value in review.items():
                         print(f"{key} = {value}")
                     print("*" * 30)
 
-            '''
+            database.add_reviews(watch_id=product_info["id"], review_list=review_list)
+            print(f"{len(review_list)} reviews saved")
+
+
 
 
             

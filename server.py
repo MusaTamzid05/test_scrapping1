@@ -23,20 +23,20 @@ class Product(Base):
     specifications = Column(String)
     image_url = Column(String)
 
-    #reviews = relationship("Review", back_populates="product")
-'''
+    reviews = relationship("Review", back_populates="product")
+
+
 class Review(Base):
     __tablename__ = 'reviews'
     
     id = Column(Integer, primary_key=True, index=True)
-    product_id = Column(Integer, ForeignKey('watches.id'))
+    watch_id = Column(Integer, ForeignKey('watches.id'))
     rating = Column(Float)
     review_text = Column(String)
     reviewer_name = Column(String)
 
     product = relationship("Product", back_populates="reviews")
 
-'''
 
 def get_db():
     db = SessionLocal()
@@ -56,7 +56,7 @@ def get_products(
     model: Optional[str] = None,
     min_price: Optional[float] = None,
     max_price: Optional[float] = None,
-    #min_rating: Optional[float] = None,
+    min_rating: Optional[float] = None,
     sort_by: Optional[str] = "price",
     page: int = Query(1, ge=1),
     limit: int = Query(10, ge=1),
@@ -75,27 +75,26 @@ def get_products(
         query = query.filter(Product.price >= min_price)
     if max_price:
         query = query.filter(Product.price <= max_price)
-    #if min_rating:
-        #query = query.filter(Product.rating >= min_rating)
+    if min_rating:
+        query = query.filter(Product.rating >= min_rating)
     
     # Sorting
     if sort_by == "price":
         query = query.order_by(Product.price)
-    #elif sort_by == "rating":
-        #query = query.order_by(desc(Product.rating))
+    elif sort_by == "rating":
+        query = query.order_by(desc(Product.rating))
     
     # Pagination
     products = paginate(query, page, limit)
     return products
 
-'''
 
 # Endpoint 2: GET /products/top (top products based on rating and reviews)
 @app.get("/products/top")
 def get_top_products(
     db: Session = Depends(get_db)
 ):
-    top_products = db.query(Product).order_by(desc(Product.rating), desc(Product.num_reviews)).limit(5).all()
+    top_products = db.query(Product).order_by(desc(Product.rating)).limit(5).all()
 
     result = []
     for product in top_products:
@@ -125,10 +124,9 @@ def get_product_reviews(
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
     
-    reviews_query = db.query(Review).filter(Review.product_id == product_id)
+    reviews_query = db.query(Review).filter(Review.watch_id== product_id)
     reviews = paginate(reviews_query, page, limit)
     
     return reviews
 
 
-'''

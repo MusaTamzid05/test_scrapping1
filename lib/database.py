@@ -17,16 +17,17 @@ class MyDatabase:
         for watch in watch_list:
             brand = watch["brand"].strip()
             model = watch["model"].strip()
-            price = watch["price"].strip()
+            price = watch["price"]
+            rating = watch["rating"]
             specifications = watch["specifications"].strip()
             category = watch["category"].strip()
             image_url = watch["image_url"].strip()
 
             insert_query = """
-        INSERT INTO watches (brand, model, price, specifications, category, image_url)
-        VALUES (%s, %s, %s, %s, %s, %s) RETURNING id
+        INSERT INTO watches (brand, model, price, rating,  specifications, category, image_url)
+        VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING id
           """
-            cursor.execute(insert_query, (brand, model, price, specifications, category, image_url))
+            cursor.execute(insert_query, (brand, model, price, rating, specifications, category, image_url))
             watch_id = cursor.fetchone()[0]
             self.db.commit()
 

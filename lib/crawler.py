@@ -24,7 +24,7 @@ class Crawler:
 
         product_info_list  = database.add_watches(watch_list=watch_list)
         print("products saved in database")
-
+        '''
         time.sleep(delay)
         product_driver = webdriver.Chrome()
 
@@ -46,6 +46,7 @@ class Crawler:
 
             database.add_reviews(watch_id=product_info["id"], review_list=review_list)
             print(f"{len(review_list)} reviews saved")
+        '''
 
 
 

@@ -15,25 +15,35 @@ class Scraper:
             model = watch.select_one('h2 span').text if watch.select_one('h2 span') else 'None'
             brand = model.split()[0] if model != "None" else "None"
             price = watch.select_one('span.a-price-whole').text if watch.select_one('span.a-price-whole') else 'None'
+            rating = watch.select_one('span.a-icon-alt').text if watch.select_one('span.a-icon-alt') else "None"
+
+            if rating != "None":
+                rating = rating.split()[0].replace(",", "")
+
             specifications = "Material: XYZ, Water resistance: 50m"  # Scrape actual specs or hardcode for now
             category = "Men's Watch"  # Scrape the category
             image_url = watch.select_one('img.s-image')['src'] if watch.select_one('img.s-image') else 'None'
             product_url = watch.select_one('a.a-link-normal')['href'] if watch.select_one('a.a-link-normal') else 'None'
 
-            if product_url != "None":
-                product_url = f"https://www.amazon.com/{product_url}"
-
-            if model == "None":
+            if product_url == "None":
                 continue
-            
+
+            try:
+                price = float(price)
+            except ValueError:
+                print(f"Skipinng {product_url}")
+                continue
+
+            product_url = f"https://www.amazon.com/{product_url}"
             watch_list.append(
                 {
                     "brand" : brand,
                     "model" : model,
-                    "price" : price,
+                    "price" : float(price),
                     "specifications" : specifications,
                     "category" : category,
                     "image_url" : image_url,
+                    "rating" : float(rating),
                     "product_url" : product_url
 
                 }
@@ -54,7 +64,7 @@ class Scraper:
             review_date = review.find('span', {'class': 'a-size-base a-color-secondary review-date'}).text.strip() if review.find('span', {'class': 'a-size-base a-color-secondary review-date'}) else "None"
             review_list.append(
                 {
-                    "rating" : rating,
+                    "rating" : float(rating),
                     "text" : review_text,
                     "reviewer_name" : reviewer_name,
                     "review_date" : review_date,

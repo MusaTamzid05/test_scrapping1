@@ -43,13 +43,11 @@
     ```
 
 6. **Run The Crawler**:
-    Open another terminal and start the Celery worker:
     ```bash
     python main.py
     ```
 
 7. **Run Fast API**:
-    Ensure the Celery worker is running and then execute the unit tests:
     ```bash
     uvicorn server:app --reload
     ```

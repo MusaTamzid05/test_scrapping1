@@ -4,7 +4,7 @@ import psycopg2
 class MyDatabase:
     def __init__(self):
         self.db = psycopg2.connect(
-        dbname="mydatabase",       # The database name you used in Docker
+        dbname="mytestdb",       # The database name you used in Docker
         user="myuser",             # The user you set in Docker
         password="mypassword",     # The password you set in Docker
         host="localhost",          # Host where Docker exposes PostgreSQL (localhost)
